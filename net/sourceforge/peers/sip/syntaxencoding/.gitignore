@@ -1,0 +1,13 @@
+/NameAddress.class
+/RunnableSipParser.class
+/SipHeader.class
+/SipHeaderFieldMultiValue.class
+/SipHeaderFieldName.class
+/SipHeaderFieldValue.class
+/SipHeaderParamName.class
+/SipHeaders.class
+/SipHeadersTable.class
+/SipParser.class
+/SipParserException.class
+/SipURI.class
+/SipUriSyntaxException.class

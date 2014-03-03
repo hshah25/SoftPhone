@@ -1,0 +1,125 @@
+2014-03-03 15:05:11,217 SENT to 86.64.162.35/5060 [Thread-1]
+
+REGISTER sip:ekiga.net SIP/2.0
+Via: SIP/2.0/UDP 172.29.2.105:6060;rport;branch=z9hG4bKypMv1vEfe
+Max-Forwards: 70
+To: <sip:89200@ekiga.net>
+From: <sip:89200@ekiga.net>;tag=pBxRRk6L
+Call-ID: bmMIWMNK-1393877111126@Harshit.wireless.concordia.ca
+CSeq: 1 REGISTER
+Contact: <sip:89200@172.29.2.105:6060;transport=UDP>
+
+
+2014-03-03 15:05:11,340 RECEIVED from 86.64.162.35/5060 [Thread-6]
+
+SIP/2.0 606 Not Acceptable
+Via: SIP/2.0/UDP 172.29.2.105:6060;rport=10004;branch=z9hG4bKypMv1vEfe;received=132.205.236.13
+To: <sip:89200@ekiga.net>;tag=c64e1f832a41ec1c1f4e5673ac5b80f6.25b5
+From: <sip:89200@ekiga.net>;tag=pBxRRk6L
+Call-ID: bmMIWMNK-1393877111126@Harshit.wireless.concordia.ca
+CSeq: 1 REGISTER
+Server: Kamailio (1.5.3-notls (i386/linux))
+Content-Length: 0
+
+
+2014-03-03 15:05:11,346 SENT to 86.64.162.35/5060 [Thread-6]
+
+REGISTER sip:ekiga.net SIP/2.0
+Via: SIP/2.0/UDP 132.205.236.13:6060;rport;branch=z9hG4bKDbUZFuT1w
+Max-Forwards: 70
+To: <sip:89200@ekiga.net>
+From: <sip:89200@ekiga.net>;tag=OL3gDmFF
+Call-ID: bmMIWMNK-1393877111126@Harshit.wireless.concordia.ca
+CSeq: 2 REGISTER
+Contact: <sip:89200@132.205.236.13:6060;transport=UDP>
+
+
+2014-03-03 15:05:11,474 RECEIVED from 86.64.162.35/5060 [Thread-6]
+
+SIP/2.0 401 Unauthorized
+Via: SIP/2.0/UDP 132.205.236.13:6060;rport=10004;branch=z9hG4bKDbUZFuT1w
+To: <sip:89200@ekiga.net>;tag=c64e1f832a41ec1c1f4e5673ac5b80f6.d6f1
+From: <sip:89200@ekiga.net>;tag=OL3gDmFF
+Call-ID: bmMIWMNK-1393877111126@Harshit.wireless.concordia.ca
+CSeq: 2 REGISTER
+WWW-Authenticate: Digest realm="ekiga.net", nonce="5314e09500013130a53844ec1cdd43e6a67b7b1ac65a4f72"
+Server: Kamailio (1.5.3-notls (i386/linux))
+Content-Length: 0
+
+
+2014-03-03 15:05:11,523 SENT to 86.64.162.35/5060 [Thread-6]
+
+REGISTER sip:ekiga.net SIP/2.0
+Via: SIP/2.0/UDP 132.205.236.13:6060;rport;branch=z9hG4bKUvdxVsGiS
+Max-Forwards: 70
+To: <sip:89200@ekiga.net>
+From: <sip:89200@ekiga.net>;tag=OL3gDmFF
+Call-ID: bmMIWMNK-1393877111126@Harshit.wireless.concordia.ca
+CSeq: 3 REGISTER
+Contact: <sip:89200@132.205.236.13:6060;transport=UDP>
+Authorization: Digest username="89200", realm="ekiga.net", nonce="5314e09500013130a53844ec1cdd43e6a67b7b1ac65a4f72", uri="sip:ekiga.net", response="91916b535b1c10cc954712c079318099"
+
+
+2014-03-03 15:05:11,662 RECEIVED from 86.64.162.35/5060 [Thread-6]
+
+SIP/2.0 200 OK
+Via: SIP/2.0/UDP 132.205.236.13:6060;rport=10004;branch=z9hG4bKUvdxVsGiS
+To: <sip:89200@ekiga.net>;tag=c64e1f832a41ec1c1f4e5673ac5b80f6.13bc
+From: <sip:89200@ekiga.net>;tag=OL3gDmFF
+Call-ID: bmMIWMNK-1393877111126@Harshit.wireless.concordia.ca
+CSeq: 3 REGISTER
+Contact: <sip:89200@132.205.236.13:6060;transport=UDP>;expires=1200
+Server: Kamailio (1.5.3-notls (i386/linux))
+Content-Length: 0
+
+
+2014-03-03 15:05:14,061 SENT to 86.64.162.35/5060 [AWT-EventQueue-0]
+
+REGISTER sip:ekiga.net SIP/2.0
+Via: SIP/2.0/UDP 132.205.236.13:6060;rport;branch=z9hG4bKekpuGoV2w
+Max-Forwards: 70
+To: <sip:89200@ekiga.net>
+From: <sip:89200@ekiga.net>;tag=oDWCSnFs
+Call-ID: bmMIWMNK-1393877111126@Harshit.wireless.concordia.ca
+CSeq: 4 REGISTER
+Contact: <sip:89200@132.205.236.13:6060;transport=UDP>;expires=0
+
+
+2014-03-03 15:05:14,184 RECEIVED from 86.64.162.35/5060 [Thread-6]
+
+SIP/2.0 401 Unauthorized
+Via: SIP/2.0/UDP 132.205.236.13:6060;rport=10004;branch=z9hG4bKekpuGoV2w
+To: <sip:89200@ekiga.net>;tag=c64e1f832a41ec1c1f4e5673ac5b80f6.8f9a
+From: <sip:89200@ekiga.net>;tag=oDWCSnFs
+Call-ID: bmMIWMNK-1393877111126@Harshit.wireless.concordia.ca
+CSeq: 4 REGISTER
+WWW-Authenticate: Digest realm="ekiga.net", nonce="5314e097000131c50ed30985be468dac1f21b45dc612319e"
+Server: Kamailio (1.5.3-notls (i386/linux))
+Content-Length: 0
+
+
+2014-03-03 15:05:14,216 SENT to 86.64.162.35/5060 [Thread-6]
+
+REGISTER sip:ekiga.net SIP/2.0
+Via: SIP/2.0/UDP 132.205.236.13:6060;rport;branch=z9hG4bKHGiLr6r5c
+Max-Forwards: 70
+To: <sip:89200@ekiga.net>
+From: <sip:89200@ekiga.net>;tag=oDWCSnFs
+Call-ID: bmMIWMNK-1393877111126@Harshit.wireless.concordia.ca
+CSeq: 5 REGISTER
+Contact: <sip:89200@132.205.236.13:6060;transport=UDP>;expires=0
+Authorization: Digest username="89200", realm="ekiga.net", nonce="5314e097000131c50ed30985be468dac1f21b45dc612319e", uri="sip:ekiga.net", response="1854a58fc37362c0a1209723acd2a4d2"
+
+
+2014-03-03 15:05:14,357 RECEIVED from 86.64.162.35/5060 [Thread-6]
+
+SIP/2.0 200 OK
+Via: SIP/2.0/UDP 132.205.236.13:6060;rport=10004;branch=z9hG4bKHGiLr6r5c
+To: <sip:89200@ekiga.net>;tag=c64e1f832a41ec1c1f4e5673ac5b80f6.5dd6
+From: <sip:89200@ekiga.net>;tag=oDWCSnFs
+Call-ID: bmMIWMNK-1393877111126@Harshit.wireless.concordia.ca
+CSeq: 5 REGISTER
+Server: Kamailio (1.5.3-notls (i386/linux))
+Content-Length: 0
+
+

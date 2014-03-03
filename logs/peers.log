@@ -1,0 +1,18 @@
+2014-03-03 15:05:11,033 INFO  [Thread-1] starting user agent [myAddress: 172.29.2.105, sipPort: 6060, userpart: 89200, domain: ekiga.net]
+2014-03-03 15:05:11,114 INFO  [Thread-1] added datagram socket 172.29.2.105:6060/UDP
+2014-03-03 15:05:11,117 INFO  [Thread-1] added 172.29.2.105:6060/UDP: net.sourceforge.peers.sip.transport.UdpMessageReceiver@15bf2b7d to message receivers
+2014-03-03 15:05:11,215 DEBUG [Thread-1] SM z9hG4bKypMv1vEfe|REGISTER [NonInviteClientTransactionStateInit -> NonInviteClientTransactionStateTrying] setState
+2014-03-03 15:05:11,342 DEBUG [Thread-6] ClientTransaction = net.sourceforge.peers.sip.transaction.NonInviteClientTransaction@79d0e2d2
+2014-03-03 15:05:11,342 DEBUG [Thread-6] SM z9hG4bKypMv1vEfe|REGISTER [NonInviteClientTransactionStateTrying -> NonInviteClientTransactionStateCompleted] setState
+2014-03-03 15:05:11,345 DEBUG [Thread-6] SM z9hG4bKDbUZFuT1w|REGISTER [NonInviteClientTransactionStateInit -> NonInviteClientTransactionStateTrying] setState
+2014-03-03 15:05:11,475 DEBUG [Thread-6] ClientTransaction = net.sourceforge.peers.sip.transaction.NonInviteClientTransaction@3944d7f2
+2014-03-03 15:05:11,476 DEBUG [Thread-6] SM z9hG4bKDbUZFuT1w|REGISTER [NonInviteClientTransactionStateTrying -> NonInviteClientTransactionStateCompleted] setState
+2014-03-03 15:05:11,522 DEBUG [Thread-6] SM z9hG4bKUvdxVsGiS|REGISTER [NonInviteClientTransactionStateInit -> NonInviteClientTransactionStateTrying] setState
+2014-03-03 15:05:11,663 DEBUG [Thread-6] ClientTransaction = net.sourceforge.peers.sip.transaction.NonInviteClientTransaction@478b4b42
+2014-03-03 15:05:11,664 DEBUG [Thread-6] SM z9hG4bKUvdxVsGiS|REGISTER [NonInviteClientTransactionStateTrying -> NonInviteClientTransactionStateCompleted] setState
+2014-03-03 15:05:14,059 DEBUG [AWT-EventQueue-0] SM z9hG4bKekpuGoV2w|REGISTER [NonInviteClientTransactionStateInit -> NonInviteClientTransactionStateTrying] setState
+2014-03-03 15:05:14,186 DEBUG [Thread-6] ClientTransaction = net.sourceforge.peers.sip.transaction.NonInviteClientTransaction@1083e733
+2014-03-03 15:05:14,186 DEBUG [Thread-6] SM z9hG4bKekpuGoV2w|REGISTER [NonInviteClientTransactionStateTrying -> NonInviteClientTransactionStateCompleted] setState
+2014-03-03 15:05:14,214 DEBUG [Thread-6] SM z9hG4bKHGiLr6r5c|REGISTER [NonInviteClientTransactionStateInit -> NonInviteClientTransactionStateTrying] setState
+2014-03-03 15:05:14,359 DEBUG [Thread-6] ClientTransaction = net.sourceforge.peers.sip.transaction.NonInviteClientTransaction@43bfcdbd
+2014-03-03 15:05:14,359 DEBUG [Thread-6] SM z9hG4bKHGiLr6r5c|REGISTER [NonInviteClientTransactionStateTrying -> NonInviteClientTransactionStateCompleted] setState

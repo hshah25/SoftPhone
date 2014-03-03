@@ -1,0 +1,12 @@
+/MessageReceiver.class
+/MessageSender$KeepAlive.class
+/MessageSender.class
+/SipClientTransportUser.class
+/SipMessage.class
+/SipRequest.class
+/SipResponse.class
+/SipServerTransportUser.class
+/SipTransportConnection.class
+/TransportManager.class
+/UdpMessageReceiver.class
+/UdpMessageSender.class

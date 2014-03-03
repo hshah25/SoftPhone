@@ -1,0 +1,10 @@
+/Codec.class
+/MediaDescription.class
+/MediaDestination.class
+/NoCodecException.class
+/RFC4566.class
+/SDPManager.class
+/SDPMessage.class
+/SdpLine.class
+/SdpParser.class
+/SessionDescription.class

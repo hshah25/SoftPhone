@@ -1,0 +1,15 @@
+/Capture.class
+/CaptureRtpSender.class
+/Decoder.class
+/DtmfFactory.class
+/Echo.class
+/Encoder.class
+/IncomingRtpReader.class
+/MediaManager.class
+/MediaMode.class
+/PcmaDecoder.class
+/PcmaEncoder.class
+/PcmuDecoder.class
+/PcmuEncoder.class
+/RtpSender.class
+/SoundManager.class
