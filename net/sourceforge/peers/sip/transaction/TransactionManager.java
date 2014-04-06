@@ -31,6 +31,7 @@ import net.sourceforge.peers.sip.Utils;
 import net.sourceforge.peers.sip.syntaxencoding.SipHeaderFieldName;
 import net.sourceforge.peers.sip.syntaxencoding.SipHeaderFieldValue;
 import net.sourceforge.peers.sip.syntaxencoding.SipHeaderParamName;
+import net.sourceforge.peers.sip.syntaxencoding.SipHeader;
 import net.sourceforge.peers.sip.transport.SipMessage;
 import net.sourceforge.peers.sip.transport.SipRequest;
 import net.sourceforge.peers.sip.transport.SipResponse;
@@ -206,5 +207,28 @@ public class TransactionManager {
     public void setTransportManager(TransportManager transportManager) {
         this.transportManager = transportManager;
     }
+    
+    /**
+	 * Gives the sipMessage if sipMessage is a SipRequest or  the SipRequest corresponding to the SipResponse if sipMessage is a SipResponse
+	 * @param sipMessage
+	 * @return  null if sipMessage is neither a SipRequest neither a SipResponse
+	 */
+	public SipRequest getSipRequest(SipMessage sipMessage) {
+		if (sipMessage instanceof SipRequest) {
+			return (SipRequest) sipMessage;
+		} else if (sipMessage instanceof SipResponse) {
+			SipResponse sipResponse = (SipResponse) sipMessage;
+			Transaction transaction = (Transaction) getClientTransaction(sipResponse);
+			if (transaction == null) {
+				transaction = (Transaction) getServerTransaction(sipResponse);
+			}
+			if (transaction == null) {
+				return null;
+			}
+			return transaction.getRequest();
+		} else {
+			return null;
+		}
+	}
 
 }
