@@ -108,44 +108,58 @@ public class MidDialogRequestManager extends RequestManager
     public ClientTransaction createNonInviteClientTransaction(
             SipRequest sipRequest, String branchId,
             ClientTransactionUser clientTransactionUser) {
+    	 String transport = transport(sipRequest);
+    	  int port = port(sipRequest);
         //8.1.2
         SipURI destinationUri = RequestManager.getDestinationUri(sipRequest,
                 logger);
 
-        //TODO if header route is present, addrspec = toproute.nameaddress.addrspec
-        String transport = RFC3261.TRANSPORT_UDP;
-        Hashtable<String, String> params = destinationUri.getUriParameters();
-        if (params != null) {
-            String reqUriTransport = params.get(RFC3261.PARAM_TRANSPORT);
-            if (reqUriTransport != null) {
-                transport = reqUriTransport;
-            }
-        }
-        int port = destinationUri.getPort();
-        if (port == SipURI.DEFAULT_PORT) {
-            port = RFC3261.TRANSPORT_DEFAULT_PORT;
-        }
-        SipURI sipUri = userAgent.getConfig().getOutboundProxy();
-        if (sipUri == null) {
-            sipUri = destinationUri;
-        }
-        InetAddress inetAddress;
-        try {
-            inetAddress = InetAddress.getByName(sipUri.getHost());
-        } catch (UnknownHostException e) {
-            logger.error("unknown host: " + sipUri.getHost(), e);
-            return null;
-        }
+      
+        InetAddress inetAddress = inetAddress(destinationUri);
         ClientTransaction clientTransaction = transactionManager
             .createClientTransaction(sipRequest, inetAddress, port, transport,
                     branchId, clientTransactionUser);
         return clientTransaction;
     }
 
+    private String transport(SipRequest sipRequest) {
+		SipURI destinationUri = RequestManager.getDestinationUri(sipRequest,
+				logger);
+		String transport = RFC3261.TRANSPORT_UDP;
+		Hashtable<String, String> params = destinationUri.getUriParameters();
+		if (params != null) {
+			String reqUriTransport = params.get(RFC3261.PARAM_TRANSPORT);
+			if (reqUriTransport != null) {
+				transport = reqUriTransport;
+			}
+		}
+		return transport;
+	}
 
+    private int port(SipRequest sipRequest) {
+  		SipURI destinationUri = RequestManager.getDestinationUri(sipRequest,
+  				logger);
+  		int port = destinationUri.getPort();
+  		if (port == SipURI.DEFAULT_PORT) {
+  			port = RFC3261.TRANSPORT_DEFAULT_PORT;
+  		}
+  		return port;
+  	}
 
-
-
+    private InetAddress inetAddress(SipURI destinationUri) {
+		SipURI sipUri = userAgent.getConfig().getOutboundProxy();
+		if (sipUri == null) {
+			sipUri = destinationUri;
+		}
+		InetAddress inetAddress;
+		try {
+			inetAddress = InetAddress.getByName(sipUri.getHost());
+		} catch (UnknownHostException e) {
+			logger.error("unknown host: " + sipUri.getHost(), e);
+			return null;
+		}
+		return inetAddress;
+	}
 
 
 
