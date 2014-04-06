@@ -131,35 +131,56 @@ public class ChallengeManager implements MessageInterceptor {
                     + authenticate);
             return;
         }
-        String headerValue = authenticate.getValue();
+        String method;
+        method = parseHeader(authenticate,sipRequest);
+
+        Dialog dialog = dialog(responseHeaders);
+      		// FIXME message should be copied "as is" not created anew from scratch
+              // and this technique is not clean
+              String callId = responseHeaders.get(
+                      new SipHeaderFieldName(RFC3261.HDR_CALLID)).getValue();
+              if (dialog != null) {
+              } else {
+        	initialRequestManager(requestHeaders, method, callId);
+        }
+    }
+    
+    private void initialRequestManager(SipHeaders requestHeaders,
+			String method, String callId) {
+		SipHeaderFieldValue from = requestHeaders.get(new SipHeaderFieldName(
+				RFC3261.HDR_FROM));
+		String fromTag = from
+				.getParam(new SipHeaderParamName(RFC3261.PARAM_TAG));
+		try {
+			initialRequestManager.createInitialRequest(requestUri, method,
+					profileUri, callId, fromTag, this);
+		} catch (SipUriSyntaxException e) {
+			logger.error("syntax error", e);
+		}
+	}
+    
+    private Dialog dialog(SipHeaders responseHeaders) {
+		String callId = responseHeaders.get(
+				new SipHeaderFieldName(RFC3261.HDR_CALLID)).getValue();
+		Dialog dialog = dialogManager.getDialog(callId);
+		if (dialog != null) {
+			midDialogRequestManager.generateMidDialogRequest(dialog,
+					RFC3261.METHOD_BYE, this);
+		} else {
+		}
+		return dialog;
+	}
+    
+    private String parseHeader(SipHeaderFieldValue authenticate,SipRequest sipRequest){
+   	 String headerValue = authenticate.getValue();
         realm = getParameter(RFC2617.PARAM_REALM, headerValue);
         nonce = getParameter(RFC2617.PARAM_NONCE, headerValue);
         opaque = getParameter(RFC2617.PARAM_OPAQUE, headerValue);
         String method = sipRequest.getMethod();
         requestUri = sipRequest.getRequestUri().toString();
         digest = getRequestDigest(method);
-
-        // FIXME message should be copied "as is" not created anew from scratch
-        // and this technique is not clean
-        String callId = responseHeaders.get(
-                new SipHeaderFieldName(RFC3261.HDR_CALLID)).getValue();
-        Dialog dialog = dialogManager.getDialog(callId);
-        if (dialog != null) {
-        	midDialogRequestManager.generateMidDialogRequest(
-                    dialog, RFC3261.METHOD_BYE, this);
-        } else {
-            SipHeaderFieldValue from = requestHeaders.get(
-                    new SipHeaderFieldName(RFC3261.HDR_FROM));
-            String fromTag = from.getParam(new SipHeaderParamName(
-                    RFC3261.PARAM_TAG));
-        	try {
-                initialRequestManager.createInitialRequest(
-                        requestUri, method, profileUri, callId, fromTag, this);
-            } catch (SipUriSyntaxException e) {
-                logger.error("syntax error", e);
-            }
-        }
-    }
+        return method;
+   }
     
     private String getRequestDigest(String method) {
         StringBuffer buf = new StringBuffer();
