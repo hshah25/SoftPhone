@@ -131,13 +131,8 @@ public class ChallengeManager implements MessageInterceptor {
                     + authenticate);
             return;
         }
-        String headerValue = authenticate.getValue();
-        realm = getParameter(RFC2617.PARAM_REALM, headerValue);
-        nonce = getParameter(RFC2617.PARAM_NONCE, headerValue);
-        opaque = getParameter(RFC2617.PARAM_OPAQUE, headerValue);
-        String method = sipRequest.getMethod();
-        requestUri = sipRequest.getRequestUri().toString();
-        digest = getRequestDigest(method);
+        String method;
+        method = parseHeader(authenticate,sipRequest);
 
         Dialog dialog = dialog(responseHeaders);
       		// FIXME message should be copied "as is" not created anew from scratch
@@ -175,6 +170,17 @@ public class ChallengeManager implements MessageInterceptor {
 		}
 		return dialog;
 	}
+    
+    private String parseHeader(SipHeaderFieldValue authenticate,SipRequest sipRequest){
+   	 String headerValue = authenticate.getValue();
+        realm = getParameter(RFC2617.PARAM_REALM, headerValue);
+        nonce = getParameter(RFC2617.PARAM_NONCE, headerValue);
+        opaque = getParameter(RFC2617.PARAM_OPAQUE, headerValue);
+        String method = sipRequest.getMethod();
+        requestUri = sipRequest.getRequestUri().toString();
+        digest = getRequestDigest(method);
+        return method;
+   }
     
     private String getRequestDigest(String method) {
         StringBuffer buf = new StringBuffer();
