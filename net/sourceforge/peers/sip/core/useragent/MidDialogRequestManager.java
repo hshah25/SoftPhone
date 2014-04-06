@@ -108,19 +108,12 @@ public class MidDialogRequestManager extends RequestManager
     public ClientTransaction createNonInviteClientTransaction(
             SipRequest sipRequest, String branchId,
             ClientTransactionUser clientTransactionUser) {
+    	 String transport = transport(sipRequest);
         //8.1.2
         SipURI destinationUri = RequestManager.getDestinationUri(sipRequest,
                 logger);
 
-        //TODO if header route is present, addrspec = toproute.nameaddress.addrspec
-        String transport = RFC3261.TRANSPORT_UDP;
-        Hashtable<String, String> params = destinationUri.getUriParameters();
-        if (params != null) {
-            String reqUriTransport = params.get(RFC3261.PARAM_TRANSPORT);
-            if (reqUriTransport != null) {
-                transport = reqUriTransport;
-            }
-        }
+      
         int port = destinationUri.getPort();
         if (port == SipURI.DEFAULT_PORT) {
             port = RFC3261.TRANSPORT_DEFAULT_PORT;
@@ -142,7 +135,19 @@ public class MidDialogRequestManager extends RequestManager
         return clientTransaction;
     }
 
-
+    private String transport(SipRequest sipRequest) {
+		SipURI destinationUri = RequestManager.getDestinationUri(sipRequest,
+				logger);
+		String transport = RFC3261.TRANSPORT_UDP;
+		Hashtable<String, String> params = destinationUri.getUriParameters();
+		if (params != null) {
+			String reqUriTransport = params.get(RFC3261.PARAM_TRANSPORT);
+			if (reqUriTransport != null) {
+				transport = reqUriTransport;
+			}
+		}
+		return transport;
+	}
 
 
 
