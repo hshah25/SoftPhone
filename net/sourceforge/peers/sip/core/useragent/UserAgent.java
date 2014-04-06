@@ -191,32 +191,7 @@ public class UserAgent {
         data.getConfig().setPublicInetAddress(null);
     }
 
-    /**
-     * Gives the sipMessage if sipMessage is a SipRequest or 
-     * the SipRequest corresponding to the SipResponse
-     * if sipMessage is a SipResponse
-     * @param sipMessage
-     * @return null if sipMessage is neither a SipRequest neither a SipResponse
-     */
-    public SipRequest getSipRequest(SipMessage sipMessage) {
-        if (sipMessage instanceof SipRequest) {
-            return (SipRequest) sipMessage;
-        } else if (sipMessage instanceof SipResponse) {
-            SipResponse sipResponse = (SipResponse) sipMessage;
-            Transaction transaction = (Transaction)data.getTransactionManager()
-                .getClientTransaction(sipResponse);
-            if (transaction == null) {
-                transaction = (Transaction)data.getTransactionManager()
-                    .getServerTransaction(sipResponse);
-            }
-            if (transaction == null) {
-                return null;
-            }
-            return transaction.getRequest();
-        } else {
-            return null;
-        }
-    }
+ 
     
 //    public List<Dialog> getDialogs() {
 //        return dialogs;
