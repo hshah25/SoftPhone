@@ -109,15 +109,12 @@ public class MidDialogRequestManager extends RequestManager
             SipRequest sipRequest, String branchId,
             ClientTransactionUser clientTransactionUser) {
     	 String transport = transport(sipRequest);
+    	  int port = port(sipRequest);
         //8.1.2
         SipURI destinationUri = RequestManager.getDestinationUri(sipRequest,
                 logger);
 
       
-        int port = destinationUri.getPort();
-        if (port == SipURI.DEFAULT_PORT) {
-            port = RFC3261.TRANSPORT_DEFAULT_PORT;
-        }
         SipURI sipUri = userAgent.getConfig().getOutboundProxy();
         if (sipUri == null) {
             sipUri = destinationUri;
@@ -149,6 +146,15 @@ public class MidDialogRequestManager extends RequestManager
 		return transport;
 	}
 
+    private int port(SipRequest sipRequest) {
+  		SipURI destinationUri = RequestManager.getDestinationUri(sipRequest,
+  				logger);
+  		int port = destinationUri.getPort();
+  		if (port == SipURI.DEFAULT_PORT) {
+  			port = RFC3261.TRANSPORT_DEFAULT_PORT;
+  		}
+  		return port;
+  	}
 
 
 
