@@ -53,101 +53,78 @@ public class UserAgent {
     public final static String CONFIG_FILE = "conf" + File.separator + "peers.xml";
     public final static int RTP_DEFAULT_PORT = 8000;
 
-    private String peersHome;
-    private Logger logger;
-    private Config config;
-    
-    private List<String> peers;
-    //private List<Dialog> dialogs;
-    
-    //TODO factorize echo and captureRtpSender
-    private Echo echo;
-    
-    private UAC uac;
-    private UAS uas;
-
-    private ChallengeManager challengeManager;
-    
-    private DialogManager dialogManager;
-    private TransactionManager transactionManager;
-    private TransportManager transportManager;
-
     private int cseqCounter;
-    private SipListener sipListener;
-    
-    private SDPManager sdpManager;
-    private SoundManager soundManager;
-    private MediaManager mediaManager;
+    private UserAgentData data = new UserAgentData();
 
-    public UserAgent(SipListener sipListener, String peersHome,
+	public UserAgent(SipListener sipListener, String peersHome,
             Logger logger) throws SocketException {
-        this.sipListener = sipListener;
+        this.data.setSipListener(sipListener);
         if (peersHome == null) {
-            this.peersHome = Utils.DEFAULT_PEERS_HOME;
+            this.data.setPeersHome(Utils.DEFAULT_PEERS_HOME);
         } else {
-            this.peersHome = peersHome;
+            this.data.setPeersHome(peersHome);
         }
         if (logger == null) {
-            logger = new Logger(this.peersHome);
+            logger = new Logger(this.data.getPeersHome());
         } else {
-            this.logger = logger;
+            this.data.setLogger(logger);
         }
-        config = new XmlConfig(this.peersHome + File.separator
-                + CONFIG_FILE, this.logger);
+        data.setConfig(new XmlConfig(this.data.getPeersHome() + File.separator
+                + CONFIG_FILE, this.data.getLogger()));
         
         cseqCounter = 1;
         
         StringBuffer buf = new StringBuffer();
         buf.append("starting user agent [");
         buf.append("myAddress: ");
-        buf.append(config.getLocalInetAddress().getHostAddress()).append(", ");
+        buf.append(data.getConfig().getLocalInetAddress().getHostAddress()).append(", ");
         buf.append("sipPort: ");
-        buf.append(config.getSipPort()).append(", ");
+        buf.append(data.getConfig().getSipPort()).append(", ");
         buf.append("userpart: ");
-        buf.append(config.getUserPart()).append(", ");
+        buf.append(data.getConfig().getUserPart()).append(", ");
         buf.append("domain: ");
-        buf.append(config.getDomain()).append("]");
+        buf.append(data.getConfig().getDomain()).append("]");
         logger.info(buf.toString());
 
         //transaction user
         
-        dialogManager = new DialogManager(logger);
+        data.setDialogManager(new DialogManager(logger));
         
         //transaction
         
-        transactionManager = new TransactionManager(logger);
+        data.setTransactionManager(new TransactionManager(logger));
         
         //transport
         
-        transportManager = new TransportManager(transactionManager, config,
-                logger);
+        data.setTransportManager(new TransportManager(data.getTransactionManager(), data.getConfig(),
+                logger));
         
-        transactionManager.setTransportManager(transportManager);
+        data.getTransactionManager().setTransportManager(data.getTransportManager());
         
         //core
         
         InviteHandler inviteHandler = new InviteHandler(this,
-                dialogManager,
-                transactionManager,
-                transportManager,
+                data.getDialogManager(),
+                data.getTransactionManager(),
+                data.getTransportManager(),
                 logger);
         CancelHandler cancelHandler = new CancelHandler(this,
-                dialogManager,
-                transactionManager,
-                transportManager,
+                data.getDialogManager(),
+                data.getTransactionManager(),
+                data.getTransportManager(),
                 logger);
         ByeHandler byeHandler = new ByeHandler(this,
-                dialogManager,
-                transactionManager,
-                transportManager,
+                data.getDialogManager(),
+                data.getTransactionManager(),
+                data.getTransportManager(),
                 logger);
         OptionsHandler optionsHandler = new OptionsHandler(this,
-                transactionManager,
-                transportManager,
+                data.getTransactionManager(),
+                data.getTransportManager(),
                 logger);
         RegisterHandler registerHandler = new RegisterHandler(this,
-                transactionManager,
-                transportManager,
+                data.getTransactionManager(),
+                data.getTransportManager(),
                 logger);
         
         InitialRequestManager initialRequestManager =
@@ -158,9 +135,9 @@ public class UserAgent {
                 byeHandler,
                 optionsHandler,
                 registerHandler,
-                dialogManager,
-                transactionManager,
-                transportManager,
+                data.getDialogManager(),
+                data.getTransactionManager(),
+                data.getTransportManager(),
                 logger);
         MidDialogRequestManager midDialogRequestManager =
             new MidDialogRequestManager(
@@ -170,48 +147,48 @@ public class UserAgent {
                 byeHandler,
                 optionsHandler,
                 registerHandler,
-                dialogManager,
-                transactionManager,
-                transportManager,
+                data.getDialogManager(),
+                data.getTransactionManager(),
+                data.getTransportManager(),
                 logger);
         
-        uas = new UAS(this,
+        data.setUas(new UAS(this,
                 initialRequestManager,
                 midDialogRequestManager,
-                dialogManager,
-                transactionManager,
-                transportManager);
-        uac = new UAC(this,
+                data.getDialogManager(),
+                data.getTransactionManager(),
+                data.getTransportManager()));
+        data.setUac(new UAC(this,
                 initialRequestManager,
                 midDialogRequestManager,
-                dialogManager,
-                transactionManager,
-                transportManager,
-                logger);
+                data.getDialogManager(),
+                data.getTransactionManager(),
+                data.getTransportManager(),
+                logger));
 
-        challengeManager = new ChallengeManager(config,
+        data.setChallengeManager(new ChallengeManager(data.getConfig(),
                 initialRequestManager,
                 midDialogRequestManager,
-                dialogManager,
-                logger);
-        registerHandler.setChallengeManager(challengeManager);
-        inviteHandler.setChallengeManager(challengeManager);
-        byeHandler.setChallengeManager(challengeManager);
+                data.getDialogManager(),
+                logger));
+        registerHandler.setChallengeManager(data.getChallengeManager());
+        inviteHandler.setChallengeManager(data.getChallengeManager());
+        byeHandler.setChallengeManager(data.getChallengeManager());
 
-        peers = new ArrayList<String>();
+        data.setPeers(new ArrayList<String>());
         //dialogs = new ArrayList<Dialog>();
 
-        sdpManager = new SDPManager(this, logger);
-        inviteHandler.setSdpManager(sdpManager);
-        optionsHandler.setSdpManager(sdpManager);
-        soundManager = new SoundManager(config.isMediaDebug(), logger,
-                this.peersHome);
-        mediaManager = new MediaManager(this, logger);
+        data.setSdpManager(new SDPManager(this, logger));
+        inviteHandler.setSdpManager(data.getSdpManager());
+        optionsHandler.setSdpManager(data.getSdpManager());
+        data.setSoundManager(new SoundManager(data.getConfig().isMediaDebug(), logger,
+                this.data.getPeersHome()));
+        data.setMediaManager(new MediaManager(this, logger));
     }
 
     public void close() {
-        transportManager.closeTransports();
-        config.setPublicInetAddress(null);
+        data.getTransportManager().closeTransports();
+        data.getConfig().setPublicInetAddress(null);
     }
 
     /**
@@ -226,10 +203,10 @@ public class UserAgent {
             return (SipRequest) sipMessage;
         } else if (sipMessage instanceof SipResponse) {
             SipResponse sipResponse = (SipResponse) sipMessage;
-            Transaction transaction = (Transaction)transactionManager
+            Transaction transaction = (Transaction)data.getTransactionManager()
                 .getClientTransaction(sipResponse);
             if (transaction == null) {
-                transaction = (Transaction)transactionManager
+                transaction = (Transaction)data.getTransactionManager()
                     .getServerTransaction(sipResponse);
             }
             if (transaction == null) {
@@ -246,7 +223,7 @@ public class UserAgent {
 //    }
 
     public List<String> getPeers() {
-        return peers;
+        return data.getPeers();
     }
 
 //    public Dialog getDialog(String peer) {
@@ -270,76 +247,76 @@ public class UserAgent {
     }
     
     public boolean isRegistered() {
-        return uac.getInitialRequestManager().getRegisterHandler()
+        return data.getUac().getInitialRequestManager().getRegisterHandler()
             .isRegistered();
     }
 
     public UAS getUas() {
-        return uas;
+        return data.getUas();
     }
 
     public UAC getUac() {
-        return uac;
+        return data.getUac();
     }
 
     public DialogManager getDialogManager() {
-        return dialogManager;
+        return data.getDialogManager();
     }
     
     public int getSipPort() {
-        return config.getSipPort();
+        return data.getConfig().getSipPort();
     }
 
     public int getRtpPort() {
-        return config.getRtpPort();
+        return data.getConfig().getRtpPort();
     }
 
     public String getDomain() {
-        return config.getDomain();
+        return data.getConfig().getDomain();
     }
 
     public String getUserpart() {
-        return config.getUserPart();
+        return data.getConfig().getUserPart();
     }
 
     public MediaMode getMediaMode() {
-        return config.getMediaMode();
+        return data.getConfig().getMediaMode();
     }
 
     public boolean isMediaDebug() {
-        return config.isMediaDebug();
+        return data.getConfig().isMediaDebug();
     }
 
     public SipURI getOutboundProxy() {
-        return config.getOutboundProxy();
+        return data.getConfig().getOutboundProxy();
     }
 
     public Echo getEcho() {
-        return echo;
+        return data.getEcho();
     }
 
     public void setEcho(Echo echo) {
-        this.echo = echo;
+        this.data.setEcho(echo);
     }
 
     public SipListener getSipListener() {
-        return sipListener;
+        return data.getSipListener();
     }
 
     public SoundManager getSoundManager() {
-        return soundManager;
+        return data.getSoundManager();
     }
 
     public MediaManager getMediaManager() {
-        return mediaManager;
+        return data.getMediaManager();
     }
 
     public Config getConfig() {
-        return config;
+        return data.getConfig();
     }
 
     public String getPeersHome() {
-        return peersHome;
+        return data.getPeersHome();
     }
 
 }
